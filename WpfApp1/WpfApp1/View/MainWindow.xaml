@@ -1,0 +1,65 @@
+﻿<Window x:Class="WpfApp1.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:vm="clr-namespace:WpfApp1.ViewModel"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+    <Window.Resources>
+        <vm:PersonViewModel x:Key="PersonViewModel"/>
+    </Window.Resources>
+    <Grid DataContext="{Binding Source={StaticResource PersonViewModel}}">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="2*" />
+            <ColumnDefinition Width="3*" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <!-- Count Label at the Top Right -->
+        <TextBlock Grid.Column="2" HorizontalAlignment="Right" VerticalAlignment="Top" 
+                   Margin="0,10,10,0" Text="{Binding Persons.Count, StringFormat=Count: {0}}" FontSize="14" />
+
+        <!-- Left side ListView -->
+        <DataGrid ItemsSource="{Binding Persons}"  SelectedItem="{Binding SelectedPerson}"
+                  AutoGenerateColumns="False" Grid.Column="0" Margin="5" CanUserAddRows="False">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Name" Binding="{Binding Name}" />
+                <DataGridTextColumn Header="Age" Binding="{Binding Age}" />
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <!-- Middle side form -->
+        <Grid Grid.Column="1" Margin="10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <!-- Name input -->
+            <TextBlock Grid.Row="0" Grid.Column="0"  Grid.ColumnSpan="2" Text="Name:" VerticalAlignment="Center" />
+            <TextBox Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="5" Text="{Binding Person.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="5" />
+
+            <!-- Age input -->
+            <TextBlock Grid.Row="1" Grid.Column="0"  Grid.ColumnSpan="2" Text="Age:" VerticalAlignment="Center" />
+            <TextBox Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="5" Text="{Binding Person.Age, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="5"  />
+            
+            <!-- Add button -->
+            <Button Grid.Row="2" Grid.Column="4" Content="+" Command="{Binding AddPersonCommand}" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="5" />
+
+            <!-- Remove button -->
+            <Button Grid.Row="2" Grid.Column="5" Content="-" Command="{Binding DeletePersonCommand}" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="5" />
+        </Grid>
+    </Grid>
+</Window>
